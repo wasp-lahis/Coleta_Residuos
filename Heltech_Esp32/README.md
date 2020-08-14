@@ -31,9 +31,12 @@ Para compilar e gravar os programas contidos nestas pastas, é necessário segui
   - [**serial bug**] Instalar pyserial: https://pyserial.readthedocs.io/en/latest/pyserial.html
 
   - [**serial port permission bug**]
-  
+  ```
+  sudo chmod a+rw /dev/ttyUSB0
+  ```
 
 # Referências
 
 - https://www.newtoncbraga.com.br/index.php/microcontrolador/143-tecnologia/16326-moduloesp32-heltech-mec218
 - https://www.fernandok.com/2018/09/instalando-esp32-no-arduino-ide-metodo.html
+- sudo chmod a+rw /dev/ttyUSB0

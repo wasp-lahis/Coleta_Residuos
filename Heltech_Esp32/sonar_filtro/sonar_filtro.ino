@@ -20,14 +20,19 @@
 #include<cmath>
 using namespace std;
 
-#define INTERVALO_LEITURA 50 //(ms)
+#define NUM_AMOSTRAS 50
+#define INTERVALO_LEITURA 100 //(ms)
+
 
 /* ---------------------------- ULTRASSONIC SENSOR ---------------------------- */
 int pin_echo= 22;
 int pin_trigger = 23;
 
 int aux = 0;
-float measure_distance = 0; // armazenar a distância lida pelo sonar
+float raw_distance = 0; // armazenar a distância lida pelo sonar
+float maverage_filter_distance = 0; // armazenar a distância lida pelo sonar
+
+int maverage_vector[NUM_AMOSTRAS];
 vector<float> distance_vector ;
 
 Ultrasonic ultrasonic(pin_trigger, pin_echo);
@@ -38,18 +43,30 @@ void setup() {
 }
  
 void loop(){
-   measure_distance = getDistance(); 
+   raw_distance = getDistance(); 
+   maverage_filter_distance = moving_average(raw_distance);
 
-   if (aux < 10){
-      distance_vector.push_back(measure_distance);
+
+//   Serial.print(raw_distance);
+//   Serial.print(" ");
+//   Serial.println(maverage_filter_distance);
+   if (aux < NUM_AMOSTRAS){
+      distance_vector.push_back(raw_distance);
       aux++;
+      Serial.print(raw_distance);
+      Serial.print(" ");
+      Serial.println(maverage_filter_distance);
    }
    else{
-    Serial.println("\nDistancia medida - Filtro Media - Filtro de Mediana (cm)");
-    Serial.print(measure_distance);
-    Serial.print(",");
+//    Serial.println("\nDistancia medida - Filtro Media - Filtro de Mediana (cm)");
+//    Serial.print(measure_distance);
+//    Serial.print(",");
+    Serial.print(raw_distance);
+    Serial.print(" ");
+    Serial.print(maverage_filter_distance);
+    Serial.print(" ");
     Serial.print(mean(distance_vector));
-    Serial.print(",");
+    Serial.print(" ");
     Serial.print(median(distance_vector));
     Serial.println();    
     
@@ -68,7 +85,8 @@ float getDistance(){
     return distanciaCM;
 }
 
-// --------- FILTERS SETTINGS --------
+
+// ============== FILTERS FUNCTIONS ==============
 float mean(vector<float> &distance){
   float sum = 0.0;
   for(int i = 0; i < distance.size(); i++){
@@ -86,4 +104,18 @@ float median(vector<float> &distance){
   else{ // impar
     return (distance[floor(distance.size()/2)]); // round down
   }
+}
+
+
+float moving_average(float raw_distance){
+  // desloca os elementos do vetor de média móvel
+  for (int i = NUM_AMOSTRAS-1; i > 0; i--) maverage_vector[i] = maverage_vector[i-1];
+
+  maverage_vector[0] = raw_distance;
+
+  long somatorio = 0;
+
+  for (int i = 0; i < NUM_AMOSTRAS; i++) somatorio += maverage_vector[i]; 
+
+   return somatorio/NUM_AMOSTRAS;
 }
