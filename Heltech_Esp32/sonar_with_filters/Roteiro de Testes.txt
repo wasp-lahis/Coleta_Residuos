@@ -1,0 +1,22 @@
+### Roteiro de Testes ###
+
+- Variantes de Estudo
+Número de amostras (50, 100, 200)
+Posição do sensor  (left, center, right)
+
+- Fixo
+Medidas esperadas
+Filtro (3 filtros)
+Tempo do experimento
+
+Medir consumo
+
+- Melhorias:
+Quantidade de sensores
+Orientação do Sensor
+Sensor x temperatura
+
+
+Quantas amostras o Leo usou?
+Qual a distância máxima do sensor ultrassônico?
+Qual as desvantagens de cada um dos filtros?
