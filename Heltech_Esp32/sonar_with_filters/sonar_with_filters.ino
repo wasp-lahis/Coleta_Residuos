@@ -20,8 +20,8 @@
 #include<cmath>
 using namespace std;
 
-#define NUM_AMOSTRAS 50
-#define INTERVALO_LEITURA 100 //(ms)
+#define NUM_AMOSTRAS 100
+#define INTERVALO_LEITURA 20 //(ms)
 
 
 /* ---------------------------- ULTRASSONIC SENSOR ---------------------------- */
@@ -53,9 +53,9 @@ void loop(){
    if (aux < NUM_AMOSTRAS){
       distance_vector.push_back(raw_distance);
       aux++;
-      Serial.print(raw_distance);
-      Serial.print(" ");
-      Serial.println(maverage_filter_distance);
+//      Serial.print(raw_distance);
+//      Serial.print(" ");
+//      Serial.println(maverage_filter_distance);
    }
    else{
 //    Serial.println("\nDistancia medida - Filtro Media - Filtro de Mediana (cm)");
@@ -117,5 +117,5 @@ float moving_average(float raw_distance){
 
   for (int i = 0; i < NUM_AMOSTRAS; i++) somatorio += maverage_vector[i]; 
 
-   return somatorio/NUM_AMOSTRAS;
+   return (float)somatorio/ (float)NUM_AMOSTRAS;
 }

@@ -20,3 +20,5 @@ Sensor x temperatura
 Quantas amostras o Leo usou?
 Qual a distância máxima do sensor ultrassônico?
 Qual as desvantagens de cada um dos filtros?
+
+
