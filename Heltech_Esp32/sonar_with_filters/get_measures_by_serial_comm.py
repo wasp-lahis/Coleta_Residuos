@@ -1,12 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#---- get values from serial and feed csv file
+# Description: Get values from serial and feed a csv file
+#
+# Author: Lahis Almeida
+#
+# >> python get_measures_by_serial_comm.py "/dev/ttyUSB0" 120
+
 
 # libs
 import serial
 import time
 import csv
+import sys
 
 #---- open port of serial communication
 def open_serial_communication(port, baud_rate):
@@ -27,8 +33,12 @@ def create_csv(title):
         writer.writerow(features)
 
 
+#----------- MAIN PROGRAM -----------
+port = str(sys.argv[1])
+cm_expected = int(sys.argv[2])
+
 features  = ["raw","mov_average", "mean","median","time"]
-cm_expected = 600
+cm_expected = cm_expected
 csv_title = "sonar_data_" + str(cm_expected) + ".csv"
 
 test_duration_time = 5 * 60 # min
@@ -36,7 +46,7 @@ init_time = time.time()
 current_time = time.time()
 
 create_csv(csv_title)
-serial_comm = open_serial_communication('/dev/ttyUSB0', 115200)
+serial_comm = open_serial_communication(port, 115200)
 
 while (current_time - init_time < test_duration_time):
     try:
