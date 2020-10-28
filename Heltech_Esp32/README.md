@@ -8,8 +8,11 @@ Placa controladora utilizada:
 Heltech Wifi LoRa 32
 ```
 
+![heltech_pinout](https://user-images.githubusercontent.com/7443249/97387127-23477e80-18b4-11eb-9685-aaca166990bc.png)
 
-# Configuração de ambiente (Mint/Ubuntu)
+
+
+## Configuração de ambiente (Mint/Ubuntu)
 
 Para compilar e gravar os programas contidos nestas pastas, é necessário seguir os passos de configuração:
 
@@ -35,7 +38,8 @@ Para compilar e gravar os programas contidos nestas pastas, é necessário segui
   sudo chmod a+rw /dev/ttyUSB0
   ```
 
-# Referências
+
+## Referências
 
 - https://www.newtoncbraga.com.br/index.php/microcontrolador/143-tecnologia/16326-moduloesp32-heltech-mec218
 - https://www.fernandok.com/2018/09/instalando-esp32-no-arduino-ide-metodo.html
