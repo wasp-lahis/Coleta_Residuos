@@ -25,8 +25,8 @@ using namespace std;
 
 
 /* ---------------------------- ULTRASSONIC SENSOR ---------------------------- */
-int pin_echo= 22;
-int pin_trigger = 23;
+int pin_echo= 23;
+int pin_trigger = 22;
 
 int aux = 0;
 float raw_distance = 0; // armazenar a distância lida pelo sonar
@@ -63,8 +63,8 @@ void loop(){
 //    Serial.print(",");
     Serial.print(raw_distance);
     Serial.print(" ");
-    Serial.print(maverage_filter_distance);
-    Serial.print(" ");
+//    Serial.print(maverage_filter_distance);
+//    Serial.print(" ");
     Serial.print(mean(distance_vector));
     Serial.print(" ");
     Serial.print(median(distance_vector));

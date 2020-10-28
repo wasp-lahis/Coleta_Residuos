@@ -37,7 +37,7 @@ def create_csv(title):
 port = str(sys.argv[1])
 cm_expected = int(sys.argv[2])
 
-features  = ["raw","mov_average", "mean","median","time"]
+features  = ["raw","mean","median","time"]
 cm_expected = cm_expected
 csv_title = "sonar_data_" + str(cm_expected) + ".csv"
 
@@ -48,7 +48,8 @@ current_time = time.time()
 create_csv(csv_title)
 serial_comm = open_serial_communication(port, 115200)
 
-while (current_time - init_time < test_duration_time):
+#while (current_time - init_time < test_duration_time):
+while (True):
     try:
         ser_bytes = serial_comm.readline()
         decoded_bytes = ser_bytes[0:len(ser_bytes)-2].decode("utf-8")
