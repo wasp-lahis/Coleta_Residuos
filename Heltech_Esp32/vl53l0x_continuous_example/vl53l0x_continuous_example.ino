@@ -13,7 +13,7 @@ void setup()
 {
   Serial.begin(115200);
   //Wire.begin();
-  Wire.begin (21, 22);   // sda= GPIO_21 /scl= GPIO_22
+  Wire1.begin (21, 22);   // sda= GPIO_21 /scl= GPIO_22
 
   sensor.setTimeout(500);
   if (!sensor.init())
