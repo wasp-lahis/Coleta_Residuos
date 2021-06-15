@@ -1,5 +1,8 @@
 # Ignore 
 .ipynb_checkpoints/
+.png
+.jpg
+.pdf
 
 # Except this file
 !.gitignore
