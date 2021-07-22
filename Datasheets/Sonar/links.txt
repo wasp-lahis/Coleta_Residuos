@@ -1,0 +1,18 @@
+Links interessantes:
+
+https://core.ac.uk/download/pdf/19160073.pdf
+https://www.instructables.com/id/Improve-Ultrasonic-Range-Sensor-Accuracy/
+https://www.youtube.com/watch?v=6F1B_N6LuKw
+https://www.youtube.com/watch?v=gW5oF8vcYb8
+https://www.youtube.com/watch?v=KzdsOhwVtms&t=42s
+
+#Ultrassonic sensor
+	
+• http://invent.module143.com/ultrasonic-sensor-how-to-use-it/
+• https://www.makerguides.com/hc-sr04-arduino-tutorial/
+• http://arcbotics.com/products/sparki/parts/ultrasonic-range-finder/
+• https://www.apgsensors.com/about-us/blog/how-ultrasonic-sensors-work
+• https://www.reddit.com/r/arduino/comments/7zaojh/help_elimimating_random_error_when_using_hcsr04/
+• https://www.reddit.com/r/arduino/comments/1e4fg8/ultrasonic_sensor_weird_values_error_or/
+
+
