@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Description: Convert .txt NS-3 building file to .csv file
+# Description: Convert .txt NS-3 file to .csv file
 #
 # Author: Lahis Almeida
 #
