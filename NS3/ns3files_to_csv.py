@@ -23,7 +23,9 @@ buildings_colunms_names  = [
     "boundaries_xMin",
     "boundaries_yMin",
     "boundaries_xMax",
-    "boundaries_yMax"
+    "boundaries_yMax",
+    "boundaries_zMax",
+    "boundaries_zMin"
 ]
 
 # dataset network
@@ -123,6 +125,5 @@ if __name__ == '__main__':
 
 
 
-path = Path(__file__).parent.absolute()
 
     
