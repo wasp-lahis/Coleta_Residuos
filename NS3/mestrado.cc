@@ -56,12 +56,12 @@ map <uint64_t, Time> pacote_dr; // receive
 vector<double> distances;
 
 // Network settings
-int nDevices = 50;
+int nDevices = 10;
 int nGateways = 1;
 double radius = 500;    // Radio coverage
 int payloadSize = 51;   // bytes
 int appPeriodSeconds = 120; // seconds
-double regionalFrequency = 868e6; // EU
+double regionalFrequency = 868e6; // frequency band EU
 
 // Output control
 bool print = true;
@@ -150,9 +150,11 @@ void Print(NodeContainer endDevices, NodeContainer gateways,  Ptr<PropagationDel
 // Simulation Code
 void simulationCode(int nSimulation){
 
-  /* Debug
+  
+  // /* Debug
   //Chamadas de funções da classe com endereços da memória dos componentes, tamanho do pacote e alguns tempos computados (?)
   //LogComponentEnable("LoraPhy", LOG_LEVEL_ALL);
+  LogComponentEnable("LoraChannel", LOG_LEVEL_INFO); // tx, rx info
   //Só chamada de funções da classe EndDevice
   //LogComponentEnable("EndDeviceLoraPhy", LOG_LEVEL_ALL);
   //Chamadas de funções com endereços da memórias como parâmetros;
@@ -197,7 +199,7 @@ void simulationCode(int nSimulation){
   //LogComponentEnable("NetworkController", LOG_LEVEL_ALL);
   //Pega endereço de pacote e mostra de qual dispositivo foi enviado e se foi recebido pelo gateway
   //LogComponentEnable("LoraPacketTracker", LOG_LEVEL_ALL);
-  */
+  //*/
 
   // Inicialization
   deviceList.resize(nDevices);
@@ -475,6 +477,27 @@ void simulationCode(int nSimulation){
       i->delay = Time(0);
     }  
   }
+
+
+  // Get RSSI for each node to GW
+  // LoraChannel testRSSI = LoraChannel();
+
+   for(NodeContainer::Iterator gw = gateways.Begin (); gw != gateways.End (); ++gw){
+        uint32_t gwId = (*gw)->GetId(); 
+        Ptr<MobilityModel> mobModelG = (*gw)->GetObject<MobilityModel>();
+        // Vector3D posgw = mobModelG->GetPosition();
+        
+        for (NodeContainer::Iterator node = endDevices.Begin (); node != endDevices.End (); ++node)
+        {
+          Ptr<MobilityModel> mobModel = (*node)->GetObject<MobilityModel>();
+          // Vector3D pos = mobModel->GetPosition();
+          // double position = mobModel->GetDistanceFrom(mobModelG);  
+          uint32_t nodeId = (*node)->GetId();
+        
+          std:: cout << "RX power for GW " << gwId << " receive from node "<< nodeId << ": ";
+          std:: cout << channel->GetRxPower(14.0,mobModel,mobModelG) << std::endl ;
+        }
+     }
 
   // Cleaning
   pacote_sf.clear();
