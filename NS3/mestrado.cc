@@ -1,11 +1,13 @@
 /* This script simulates a complex scenario with multiple GWs, EDs and buildings.
  * The metrics of interest for the network of this script are:
  * - Throughput 
- * - Packet Error Rate 
+ * - Packet Loss Rate (TO DO)
+ * - Packet Error Rate (TO DO)
+ * - Packet Delivery Rate 
  * - Average Delay per SF
  * - Total Average delay
  * 
- * Authors: Lahis Almeida
+ * Authors: Lahis Almeida e Marianna Campos
  * Based on:
  * - https://github.com/GaiaFL/NS-3_LoraWan
  * - https://gitlab.com/serzagit/QoS-802.11ah-NS3/-/blob/master/scratch/test/NodeEntry.cc
@@ -27,6 +29,8 @@
 #include "ns3/building-penetration-loss.h"
 #include "ns3/building-allocator.h"
 #include "ns3/buildings-helper.h"
+
+#include "ns3/mobility-module.h"
 
 using namespace ns3;
 using namespace lorawan;
@@ -56,7 +60,7 @@ map <uint64_t, Time> pacote_dr; // receive
 vector<double> distances;
 
 // Network settings
-int nDevices = 10;
+int nDevices = 50;
 int nGateways = 1;
 double radius = 500;    // Radio coverage
 int payloadSize = 51;   // bytes
@@ -154,7 +158,7 @@ void simulationCode(int nSimulation){
   // /* Debug
   //Chamadas de funções da classe com endereços da memória dos componentes, tamanho do pacote e alguns tempos computados (?)
   //LogComponentEnable("LoraPhy", LOG_LEVEL_ALL);
-  LogComponentEnable("LoraChannel", LOG_LEVEL_INFO); // tx, rx info
+  // LogComponentEnable("LoraChannel", LOG_LEVEL_INFO); // tx, rx info
   //Só chamada de funções da classe EndDevice
   //LogComponentEnable("EndDeviceLoraPhy", LOG_LEVEL_ALL);
   //Chamadas de funções com endereços da memórias como parâmetros;
@@ -245,8 +249,13 @@ void simulationCode(int nSimulation){
   helper.EnablePacketTracking ();
 
   MobilityHelper mobility;
+  std::string mobility_file = "ns2mobility.tcl";
+  
+  // using built-in ns-2 mobility helper
+  // Ns2MobilityHelper sumo_trace(mobility_file);
 
   // random EDs positions distributions
+  // see https://www.nsnam.org/wiki/MobilityHelper
   mobility.SetPositionAllocator ("ns3::UniformDiscPositionAllocator", "rho", DoubleValue (radius),
                                       "X", DoubleValue (0.0), "Y", DoubleValue (0.0));
 
@@ -299,12 +308,12 @@ void simulationCode(int nSimulation){
    *  Handle buildings  *
    **********************/
 
-  double xLength = 130; 
-  double deltaX = 32;
-  double yLength = 64;
-  double deltaY = 17;
-  int gridWidth = 2 * radius / (xLength + deltaX);
-  int gridHeight = 2 * radius / (yLength + deltaY);
+  double xLength = 130; // tamanho do predio no eixo X
+  double deltaX = 32; // distancia entre predios no eixo X
+  double yLength = 64; // tamanho do predio no eixo Y
+  double deltaY = 17; // distancia entre predios no eixo Y
+  int gridWidth = 2 * radius / (xLength + deltaX); // n de colunas de predios
+  int gridHeight = 2 * radius / (yLength + deltaY); // n de linhas de predios
   if (realisticChannelModel == false)
     {
       gridWidth = 0;
@@ -480,24 +489,25 @@ void simulationCode(int nSimulation){
 
 
   // Get RSSI for each node to GW
-  // LoraChannel testRSSI = LoraChannel();
-
-   for(NodeContainer::Iterator gw = gateways.Begin (); gw != gateways.End (); ++gw){
-        uint32_t gwId = (*gw)->GetId(); 
-        Ptr<MobilityModel> mobModelG = (*gw)->GetObject<MobilityModel>();
-        // Vector3D posgw = mobModelG->GetPosition();
-        
-        for (NodeContainer::Iterator node = endDevices.Begin (); node != endDevices.End (); ++node)
-        {
-          Ptr<MobilityModel> mobModel = (*node)->GetObject<MobilityModel>();
-          // Vector3D pos = mobModel->GetPosition();
-          // double position = mobModel->GetDistanceFrom(mobModelG);  
-          uint32_t nodeId = (*node)->GetId();
-        
-          std:: cout << "RX power for GW " << gwId << " receive from node "<< nodeId << ": ";
-          std:: cout << channel->GetRxPower(14.0,mobModel,mobModelG) << std::endl ;
-        }
-     }
+  // see LoraChannel::Send function in lora-channel.cc to understanding:
+  // LogComponentEnable("LoraChannel", LOG_LEVEL_INFO) and GetRxPower() 
+  for(NodeContainer::Iterator gw = gateways.Begin (); gw != gateways.End (); ++gw){
+      uint32_t gwId = (*gw)->GetId(); 
+      Ptr<MobilityModel> mobModelG = (*gw)->GetObject<MobilityModel>();
+      // Vector3D posgw = mobModelG->GetPosition();
+      
+      for (NodeContainer::Iterator node = endDevices.Begin (); node != endDevices.End (); ++node)
+      {
+        Ptr<MobilityModel> mobModel = (*node)->GetObject<MobilityModel>();
+        // Vector3D pos = mobModel->GetPosition();
+        double position = mobModel->GetDistanceFrom(mobModelG);  
+        uint32_t nodeId = (*node)->GetId();
+      
+        std:: cout << "RX power for GW " << gwId << " receive from node "<< nodeId << ": ";
+        std:: cout << channel->GetRxPower(14.0,mobModel,mobModelG) << " - distance from GW "
+        << position << std::endl ;
+      }
+  }
 
   // Cleaning
   pacote_sf.clear();
